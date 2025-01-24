@@ -21,6 +21,7 @@ jobs:
       run: |
         cat << 'EOF' > publish-modules.sh
         #!/bin/bash
+        shopt -s globstar
         for file in ./bicep-modules/**/*.bicep; do
           [ -f "$file" ] || continue
           module="${file/%\.bicep/${CONTAINER_TAG}}"
