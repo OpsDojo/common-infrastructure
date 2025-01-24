@@ -24,8 +24,8 @@ jobs:
         shopt -s globstar
         for file in ./bicep-modules/**/*.bicep; do
           [ -f "$file" ] || continue
-          module="${file/%\.bicep/:${{ env.CONTAINER_TAG }}}"
-          cr_target = "br:${{ env.ACR_HOST }}/${module:2}"
+          module="${file/%\.bicep/:${{ env.CONTAINER_VERSION }}}"
+          cr_target="br:${{ env.CONTAINER_HOST }}/${module:2}"
           echo "$file --> $cr_target"
           az bicep publish -f "$file" -t $cr_target --force
         done
