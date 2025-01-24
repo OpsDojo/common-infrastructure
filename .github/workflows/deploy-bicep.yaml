@@ -8,10 +8,10 @@ on:
         default: v1
 jobs:
   deploy-bicep:
-    env:
-      CONTAINER_TAG: ":${{ github.event.inputs.tag == '' && 'v1' || github.event.inputs.tag }}"
-      ACR_HOST: "ghcr.io/opsdojo"
     runs-on: ubuntu-latest
+    env:
+      CONTAINER_HOST: "ghcr.io/opsdojo"
+      CONTAINER_VERSION: "${{ github.event.inputs.tag == '' && 'v1' || github.event.inputs.tag }}"
     steps:
 
     - name: Checkout
@@ -24,9 +24,10 @@ jobs:
         shopt -s globstar
         for file in ./bicep-modules/**/*.bicep; do
           [ -f "$file" ] || continue
-          module="${file/%\.bicep/${CONTAINER_TAG}}"
-          echo "$file --> br:${ACR_HOST}/${module:2}"
-          az bicep publish -f "$file" -t "br:${ACR_HOST}/${module:2}" --force
+          module="${file/%\.bicep/:${{ env.CONTAINER_TAG }}}"
+          cr_target = "br:${{ env.ACR_HOST }}/${module:2}"
+          echo "$file --> $cr_target"
+          az bicep publish -f "$file" -t $cr_target --force
         done
         EOF
         chmod +x publish-modules.sh
