@@ -33,4 +33,4 @@ jobs:
     - name: Upsert modules
       run: |
         docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace \
-          mcr.microsoft.com/azure-bicep:latest ./publish-modules.sh
+          mcr.microsoft.com/azure-cli:latest ./publish-modules.sh
