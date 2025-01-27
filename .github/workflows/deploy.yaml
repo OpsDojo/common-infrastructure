@@ -7,14 +7,14 @@ on:
         required: true
         default: v1
 jobs:
-  deploy-iac-reqs:
+  bicep:
     runs-on: ubuntu-latest
     steps:
 
     - name: Checkout bicep modules
       uses: actions/checkout@v4
       with:
-        name: opsdojo/common-bicep
+        repository: opsdojo/common-bicep
         ref: ${{ inputs.bicep_version }}
         path: bicep-modules
 
