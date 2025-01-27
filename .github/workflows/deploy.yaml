@@ -1,0 +1,23 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      bicep_version:
+        description: Bicep module version
+        required: true
+        default: v1
+jobs:
+  deploy-iac-reqs:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout bicep modules
+      uses: actions/checkout@v4
+      with:
+        name: opsdojo/common-bicep
+        ref: ${{ inputs.bicep_version }}
+        path: bicep-modules
+
+    - name: Check module files
+      run: |
+        find "bicep-modules" -type f
